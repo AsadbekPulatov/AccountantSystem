@@ -21,24 +21,6 @@
                                     @csrf
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="farmer_id">Фермер:</label>
-                                            <select name="farmer_id" class="form-control" id="farmer_id">
-                                                <option value="">Танланг</option>
-                                                @foreach(\App\Models\Farmer::all() as $farmer)
-                                                    <option value="{{ $farmer->id }}">{{ $farmer->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="worker_id">Тракторчи:</label>
-                                            <select name="worker_id" class="form-control" id="worker_id">
-                                                <option value="">Танланг</option>
-                                                @foreach(\App\Models\Worker::all() as $worker)
-                                                    <option value="{{ $worker->id }}">{{ $worker->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
                                             <label for="from_date">Санадан:</label>
                                             <input type="date" name="from_date" class="form-control" id="from_date"
                                                    required>
@@ -74,124 +56,56 @@
                             <i class="fa fa-filter"></i> {{ __("messages.filter") }}
                         </button>
                         <div>
-                            <a href="{{ route('download.farmers',
-                                        [
-                                            'from_date' => $from_date,
-                                            'to_date' => $to_date,
-                                            'worker_id' => $worker_id,
-                                            'farmer_id' => $farmer_id,
-                                        ]
-                                        ) }}" class="btn btn-info ml-3"><i class="fa fa-download"></i> {{ __("messages.download") }}</a>
+                            <a href="" class="btn btn-info ml-3"><i
+                                    class="fa fa-download"></i> {{ __("messages.download") }}</a>
                         </div>
                     </div>
-                    @if($page == 'farmer')
-                        <div class="table-responsive">
-                            <table class="table table-hover text-center">
-                                <thead>
+                    <div class="table-responsive">
+                        <table class="table table-hover text-center">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ПРАВОДКА №</th>
+                                <th>Сана</th>
+                                <th>Мазмуни</th>
+                                <th>КГ</th>
+                                <th>ДТ</th>
+                                <th>КТ</th>
+                                <th>Нархи</th>
+                                <th>Амаллар</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($reports as $item)
                                 <tr>
-                                    <th>#</th>
-                                    <th>Фермер</th>
-                                    <th>Хизмат</th>
-                                    <th>Микдори</th>
-                                    <th>Нархи</th>
-                                    <th>Жами</th>
-                                    <th>Сана</th>
-                                    <th>Амаллар</th>
+                                    <td>{{$loop->index +1}}</td>
+                                    <td>{{$item->n_id}}</td>
+                                    <td>{{$item->month}} {{$item->year}}</td>
+                                    <td>{{$item->title}}</td>
+                                    <td>{{$item->weight}}</td>
+                                    <td>{{$item->dt}}</td>
+                                    <td>{{$item->kt}}</td>
+                                    <td>{{number_format($item->price, 0, ' ', ' ')}}</td>
+                                    <td class="d-flex justify-content-center">
+
+                                        <a href="{{ route('reports.edit', $item->id) }}" class="btn btn-warning">
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+
+
+                                        <form action="{{route('reports.destroy', $item->id)}}" method="post">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger show_confirm"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </form>
+
+                                    </td>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($reports as $firm)
-                                    <tr>
-                                        <td>{{$loop->index +1}}</td>
-                                        <td>{{$firm->farmer->name}}</td>
-                                        <td>{{$firm->service->name}}</td>
-                                        <td>{{$firm->weight}}</td>
-                                        <td>{{number_format($firm->service->price, 0, ' ', ' ')}}</td>
-                                        <td>{{number_format($firm->service->price * $firm->weight, 2, ',', ' ')}}</td>
-                                        <td>
-                                            @if($firm->start_date == $firm->end_date)
-                                                {{date('d.m.Y', strtotime($firm->start_date))}}
-                                            @else
-                                                {{date('d.m.Y', strtotime($firm->start_date))}}
-                                                - {{date('d.m.Y', strtotime($firm->end_date))}}
-                                            @endif
-                                            {{--                                    {{$firm->date}}--}}
-                                        </td>
-                                        <td class="d-flex">
-
-                                            <a href="{{ route('reports.edit', $firm->id) }}" class="btn btn-warning">
-                                                <i class="fa fa-pen"></i>
-                                            </a>
-
-
-                                            <form action="{{route('reports.destroy', $firm->id)}}" method="post">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger show_confirm"><i
-                                                        class="fa fa-trash"></i></button>
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @elseif($page == 'worker')
-                        <div class="table-responsive">
-                            <table class="table table-hover text-center">
-                                <thead>
-                                <tr>
-                                    <th>Т/р</th>
-                                    <th>Санаси</th>
-                                    <th>Тракторчининг Ф.И.Ш</th>
-                                    <th>Ф\х номи</th>
-                                    <th>Иш тури</th>
-                                    <th>Тр маркаси</th>
-                                    <th>у\б</th>
-                                    <th>Микдори</th>
-                                    <th>Нархи</th>
-                                    <th>Жами</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($reports as $firm)
-                                    <tr>
-                                        <td>{{$loop->index +1}}</td>
-                                        <td>
-                                            @if($firm->start_date == $firm->end_date)
-                                                {{date('d.m.Y', strtotime($firm->start_date))}}
-                                            @else
-                                                {{date('d.m.Y', strtotime($firm->start_date))}}
-                                                - {{date('d.m.Y', strtotime($firm->end_date))}}
-                                            @endif
-                                        </td>
-                                        <td>{{$firm->worker->name}}</td>
-                                        <td>{{$firm->farmer->name}}</td>
-                                        <td>{{$firm->service->name}}</td>
-                                        <td>{{$firm->tractor->name}}</td>
-                                        <td>{{$firm->service->type->type}}</td>
-                                        <td>{{$firm->weight}}</td>
-                                        <td>{{number_format($firm->service->price, 0, ' ', ' ')}}</td>
-                                        <td>{{number_format($firm->service->price * $firm->weight, 2, ',', ' ')}}</td>
-                                    </tr>
-                                @endforeach
-                                <tr class="text-bold">
-                                    <td>х</td>
-                                    <td>х</td>
-                                    <td>ЖАМИ</td>
-                                    <td>х</td>
-                                    <td>х</td>
-                                    <td>х</td>
-                                    <td>х</td>
-                                    <td>{{$sum['staj']}}</td>
-                                    <td>х</td>
-                                    <td>{{number_format($sum['price'], 2, ',', ' ')}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

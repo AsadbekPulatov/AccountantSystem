@@ -13,74 +13,43 @@
                     <div class="card-body">
                         <div class="d-flex">
                             <div class="form-group w-100">
-                                <label for="start_date">Санадан:</label>
-                                <input type="date" name="start_date" class="form-control" id="date" required
-                                       onchange="sana()">
+                                <label for="n_id">ПРАВОДКА №:</label>
+                                <input type="number" name="n_id" class="form-control" id="n_id" required min="1"
+                                       max="10" value="1">
                             </div>
                             <div class="form-group w-100 ml-3">
-                                <label for="date">Санагача:</label>
-                                <input type="date" name="end_date" class="form-control" id="end_date" required
-                                       onchange="validate()">
+                                <label for="year">Йил:</label>
+                                <input type="number" name="year" class="form-control" id="year" required min="1900"
+                                       max="2100" value="2000">
+                            </div>
+                            <div class="form-group w-100 ml-3">
+                                <label for="month">Ой:</label>
+                                <select name="month" class="form-control form-select" id="month" required>
+                                    <option value="{{ __("messages.january") }}">{{ __("messages.january") }}</option>
+                                    <option value="{{ __("messages.february") }}">{{ __("messages.february") }}</option>
+                                    <option value="{{ __("messages.march") }}">{{ __("messages.march") }}</option>
+                                    <option value="{{ __("messages.april") }}">{{ __("messages.april") }}</option>
+                                    <option value="{{ __("messages.may") }}">{{ __("messages.may") }}</option>
+                                    <option value="{{ __("messages.june") }}">{{ __("messages.june") }}</option>
+                                    <option value="{{ __("messages.july") }}">{{ __("messages.july") }}</option>
+                                    <option value="{{ __("messages.august") }}">{{ __("messages.august") }}</option>
+                                    <option
+                                        value="{{ __("messages.september") }}">{{ __("messages.september") }}</option>
+                                    <option value="{{ __("messages.october") }}">{{ __("messages.october") }}</option>
+                                    <option value="{{ __("messages.november") }}">{{ __("messages.november") }}</option>
+                                    <option value="{{ __("messages.december") }}">{{ __("messages.december") }}</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="worker_id">Тракторчи:</label>
-                            <select name="worker_id" class="form-control" id="worker_id" required>
-                                <option value="">Тракторчини танланг</option>
-                                @foreach($workers as $worker)
-                                    <option value="{{ $worker->id }}">{{ $worker->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tractor_id">Трактор маркаси:</label>
-                            <select name="tractor_id" class="form-control" id="tractor_id" required
-                                    onchange="tractor()">
-                                <option value="">Трактор маркасини танланг</option>
-                                @foreach($tractors as $tractor)
-                                    <option value="{{ $tractor->id }}">{{ $tractor->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="farmer_id">Фермер:</label>
-                            <select name="farmer_id" class="form-control" id="farmer_id" required>
-                                <option value="">Фермерни танланг</option>
-                                @foreach($farmers as $farmer)
-                                    <option value="{{ $farmer->id }}">{{ $farmer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="service_id">Иш тури:</label>
-                            <select name="service_id" class="form-control" id="service_id" required
-                                    onclick="service()"></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="type_id">Улчов бирлиги:</label>
-                            <input type="text" name="type_id" class="form-control" id="type_id" required disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="count">Иш меъёри:</label>
-                            <input type="number" name="count" class="form-control" id="count" required disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="weight">Микдори:</label>
-                            <input type="text" name="weight" class="form-control" id="weight" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Хизмат баҳоси:</label>
-                            <input type="number" name="price" class="form-control" id="price" required disabled>
-                        </div>
-                        <div class="form-group">
-                            <label for="price_worker">Разряд баҳоси:</label>
-                            <input type="number" name="price_worker" class="form-control" id="price_worker" required
-                                   disabled>
+                        <div class="form-group w-100 ml-3 grid" id="grid">
+
                         </div>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer justify-content-between">
-                        <button type="submit" class="btn btn-primary">{{ __("messages.save") }}</button>
+                    <div class="card-footer d-flex justify-content-start">
+                        <button type="submit" class="btn btn-primary mr-3">{{ __("messages.save") }}</button>
+                        <button type="button" class="btn btn-success"
+                                onclick="add_row()">{{ __("messages.add") }}</button>
                     </div>
                 </form>
                 {{--                </div>--}}
@@ -92,96 +61,51 @@
 @endsection
 @section('custom-scripts')
     <script>
-        var services = @json($services);
-        var types = @json($types);
-        var newServices = [];
-        var ServiceName = [];
+        function add_row() {
 
-        function validate() {
-            var start_date = document.getElementById('date');
-            var end_date = document.getElementById('end_date');
-            if (start_date.value > end_date.value) {
-                toastr.error('Саналарни киритишда хатолик бор');
-                end_date.style.backgroundColor = 'red';
-                // end_date.style.border = '1px solid red';
-            } else {
-                end_date.style.backgroundColor = start_date.style.backgroundColor;
-            }
-        }
+            // Create the row container
+            var rowContainer = document.createElement('div');
+            rowContainer.setAttribute('class', 'row d-flex mt-3 w-100');
 
-        function sana() {
-            newServices = [];
-            var date = document.getElementById('date').value;
-            for (var i = 0; i < services.length; i++) {
-                if (services[i].date <= date) {
-                    ServiceName.push(services[i].name);
-                    newServices.push(services[i]);
-                }
-            }
-            var select = document.getElementById('service_id');
-            select.innerHTML = '';
-            var option = document.createElement('option');
-            option.value = "";
-            option.innerHTML = "Иш турини танланг";
-            select.appendChild(option);
-            document.getElementById('tractor_id').value = "";
-            document.getElementById('type_id').value = "";
-            document.getElementById('price').value = "";
-            document.getElementById('price_worker').value = "";
-            document.getElementById('count').value = "";
-            for (var i = 0; i < newServices.length; i++) {
-                var option = document.createElement('option');
-                option.value = newServices[i].id;
-                option.innerHTML = newServices[i].name;
-                select.appendChild(option);
-            }
-        }
+            // Create six input elements
+            var TitleElement = document.createElement('input');
+            TitleElement.setAttribute('type' , 'string');
+            TitleElement.setAttribute('class' , 'form-control col-4 ml-1');
+            TitleElement.setAttribute('name' , 'title[]');
+            TitleElement.setAttribute('placeholder' , 'Мазмуни');
+            rowContainer.appendChild(TitleElement);
 
-        function tractor() {
-            var tractor_id = document.getElementById('tractor_id').value;
-            var date = document.getElementById('date').value;
-            var select = document.getElementById('service_id');
-            ServiceName = [];
-            newServices = [];
-            for (var i = 0; i < services.length; i++) {
-                if (services[i].date <= date && services[i].tractor_id == tractor_id && ServiceName.includes(services[i].name) == false) {
-                    ServiceName.push(services[i].name);
-                    newServices.push(services[i]);
-                }
-            }
-            select.innerHTML = '';
-            var option = document.createElement('option');
-            option.value = "";
-            option.innerHTML = "Иш турини танланг";
-            select.appendChild(option);
-            document.getElementById('type_id').value = "";
-            document.getElementById('price').value = "";
-            document.getElementById('price_worker').value = "";
-            document.getElementById('count').value = "";
-            for (var i = 0; i < newServices.length; i++) {
-                if (newServices[i].tractor_id == tractor_id) {
-                    var option = document.createElement('option');
-                    option.value = newServices[i].id;
-                    option.innerHTML = newServices[i].name;
-                    select.appendChild(option);
-                }
-            }
-        }
+            var WeightElement = document.createElement('input');
+            WeightElement.setAttribute('type' , 'number');
+            WeightElement.setAttribute('class' , 'form-control col-1 ml-1');
+            WeightElement.setAttribute('name' , 'weight[]');
+            WeightElement.setAttribute('placeholder' , 'КГ');
+            rowContainer.appendChild(WeightElement);
 
-        function service() {
-            var service_id = document.getElementById('service_id').value;
-            var type_id = document.getElementById('type_id');
-            var price = document.getElementById('price');
-            var price_worker = document.getElementById('price_worker');
-            var count = document.getElementById('count');
-            for (var i = 0; i < newServices.length; i++) {
-                if (newServices[i].id == service_id) {
-                    type_id.value = types[newServices[i].type_id];
-                    price.value = newServices[i].price;
-                    price_worker.value = newServices[i].price_worker;
-                    count.value = newServices[i].count;
-                }
-            }
+            var DtElement = document.createElement('input');
+            DtElement.setAttribute('type' , 'number');
+            DtElement.setAttribute('class' , 'form-control col-2 ml-1');
+            DtElement.setAttribute('name' , 'dt[]');
+            DtElement.setAttribute('placeholder' , 'ДТ');
+            rowContainer.appendChild(DtElement);
+
+            var KtElement = document.createElement('input');
+            KtElement.setAttribute('type' , 'number');
+            KtElement.setAttribute('class' , 'form-control col-2 ml-1');
+            KtElement.setAttribute('name' , 'kt[]');
+            KtElement.setAttribute('placeholder' , 'КТ');
+            rowContainer.appendChild(KtElement);
+
+            var PriceElement = document.createElement('input');
+            PriceElement.setAttribute('type' , 'string');
+            PriceElement.setAttribute('class' , 'form-control col-2 ml-1');
+            PriceElement.setAttribute('name' , 'price[]');
+            PriceElement.setAttribute('placeholder' , 'Суммаси');
+            rowContainer.appendChild(PriceElement);
+
+            // Append the row container to the grid container
+            var gridContainer = document.getElementById('grid');
+            gridContainer.appendChild(rowContainer);
         }
     </script>
 @endsection

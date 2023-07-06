@@ -14,66 +14,53 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="form-group w-100">
-                                    <label for="start_date">Санадан:</label>
-                                    <input type="date" name="start_date" class="form-control" id="start_date" required
-                                           onchange="sana()" value="{{ $report->start_date }}">
+                                    <label for="n_id">ПРАВОДКА №:</label>
+                                    <input type="number" name="n_id" class="form-control" id="n_id" required min="1"
+                                           max="10" value="1">
                                 </div>
                                 <div class="form-group w-100 ml-3">
-                                    <label for="date">Санагача:</label>
-                                    <input type="date" name="end_date" class="form-control" id="date" required
-                                           onchange="sana()" value="{{ $report->end_date }}">
+                                    <label for="year">Йил:</label>
+                                    <input type="number" name="year" class="form-control" id="year" required min="1900"
+                                           max="2100" value="2000">
+                                </div>
+                                <div class="form-group w-100 ml-3">
+                                    <label for="month">Ой:</label>
+                                    <select name="month" class="form-control form-select" id="month" required>
+                                        <option value="{{ __("messages.january") }}">{{ __("messages.january") }}</option>
+                                        <option value="{{ __("messages.february") }}">{{ __("messages.february") }}</option>
+                                        <option value="{{ __("messages.march") }}">{{ __("messages.march") }}</option>
+                                        <option value="{{ __("messages.april") }}">{{ __("messages.april") }}</option>
+                                        <option value="{{ __("messages.may") }}">{{ __("messages.may") }}</option>
+                                        <option value="{{ __("messages.june") }}">{{ __("messages.june") }}</option>
+                                        <option value="{{ __("messages.july") }}">{{ __("messages.july") }}</option>
+                                        <option value="{{ __("messages.august") }}">{{ __("messages.august") }}</option>
+                                        <option
+                                            value="{{ __("messages.september") }}">{{ __("messages.september") }}</option>
+                                        <option value="{{ __("messages.october") }}">{{ __("messages.october") }}</option>
+                                        <option value="{{ __("messages.november") }}">{{ __("messages.november") }}</option>
+                                        <option value="{{ __("messages.december") }}">{{ __("messages.december") }}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="worker_id">Тракторчи:</label>
-                                <select name="worker_id" class="form-control" id="worker_id" required>
-                                    <option value="">Тракторчини танланг</option>
-                                    @foreach($workers as $worker)
-                                        <option value="{{ $worker->id }}">{{ $worker->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="title">Мазмуни:</label>
+                                <input type="text" name="title" class="form-control" id="title" required value="{{ $report->title }}">
                             </div>
                             <div class="form-group">
-                                <label for="tractor_id">Трактор маркаси:</label>
-                                <select name="tractor_id" class="form-control" id="tractor_id" required onchange="tractor()">
-                                    <option value="">Трактор маркасини танланг</option>
-                                    @foreach($tractors as $tractor)
-                                        <option value="{{ $tractor->id }}">{{ $tractor->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="weight">КГ:</label>
+                                <input type="number" name="weight" class="form-control" id="weight" required value="{{ $report->weight }}">
                             </div>
                             <div class="form-group">
-                                <label for="farmer_id">Фермер:</label>
-                                <select name="farmer_id" class="form-control" id="farmer_id" required>
-                                    <option value="">Фермерни танланг</option>
-                                    @foreach($farmers as $farmer)
-                                        <option value="{{ $farmer->id }}">{{ $farmer->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="dt">ДТ:</label>
+                                <input type="number" name="dt" class="form-control" id="dt" required value="{{ $report->dt }}">
                             </div>
                             <div class="form-group">
-                                <label for="service_id">Иш тури:</label>
-                                <select name="service_id" class="form-control" id="service_id" required onclick="service()"></select>
+                                <label for="kt">КТ:</label>
+                                <input type="number" name="kt" class="form-control" id="kt" required value="{{ $report->kt }}">
                             </div>
                             <div class="form-group">
-                                <label for="type_id">Улчов бирлиги:</label>
-                                <input type="text" name="type_id" class="form-control" id="type_id" required disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="count">Иш меъёри:</label>
-                                <input type="number" name="count" class="form-control" id="count" required disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="weight">Микдори:</label>
-                                <input type="text" name="weight" class="form-control" id="weight" required value="{{ $report->weight }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="price">Хизмат баҳоси:</label>
-                                <input type="number" name="price" class="form-control" id="price" required disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="price_worker">Разряд баҳоси:</label>
-                                <input type="number" name="price_worker" class="form-control" id="price_worker" required disabled>
+                                <label for="price">Суммаси:</label>
+                                <input type="text" name="price" class="form-control" id="price" required value="{{ $report->price }}">
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -88,90 +75,6 @@
         <!-- /.col-md-6 -->
     </div>
     <script>
-        document.getElementById('worker_id').value = '{{ $report->worker_id }}';
-        document.getElementById('tractor_id').value = '{{ $report->tractor_id }}';
-        document.getElementById('farmer_id').value = '{{ $report->farmer_id }}';
-        document.getElementById('type_id').value = '{{ $report->type_id }}';
-        var services = @json($services);
-        var types = @json($types);
-        var newServices = [];
-        var ServiceName = [];
-        tractor()
-        document.getElementById('service_id').value = '{{ $report->service_id }}';
-        service()
-        function sana() {
-            newServices = [];
-            var date = document.getElementById('date').value;
-            for (var i = 0; i < services.length; i++) {
-                if (services[i].date <= date) {
-                    ServiceName.push(services[i].name);
-                    newServices.push(services[i]);
-                }
-            }
-            var select = document.getElementById('service_id');
-            select.innerHTML = '';
-            var option = document.createElement('option');
-            option.value = "";
-            option.innerHTML = "Иш турини танланг";
-            select.appendChild(option);
-            document.getElementById('tractor_id').value = "";
-            document.getElementById('type_id').value = "";
-            document.getElementById('price').value = "";
-            document.getElementById('price_worker').value = "";
-            document.getElementById('count').value = "";
-            for (var i = 0; i < newServices.length; i++) {
-                var option = document.createElement('option');
-                option.value = newServices[i].id;
-                option.innerHTML = newServices[i].name;
-                select.appendChild(option);
-            }
-        }
-        function tractor(){
-            var tractor_id = document.getElementById('tractor_id').value;
-            var date = document.getElementById('date').value;
-            var select = document.getElementById('service_id');
-            ServiceName = [];
-            newServices = [];
-            console.log(services);
-            for (var i = 0; i < services.length; i++) {
-                if (services[i].date <= date && services[i].tractor_id == tractor_id && ServiceName.includes(services[i].name) == false) {
-                    ServiceName.push(services[i].name);
-                    newServices.push(services[i]);
-                }
-            }
-            select.innerHTML = '';
-            console.log(newServices)
-            var option = document.createElement('option');
-            option.value = "";
-            option.innerHTML = "Иш турини танланг";
-            select.appendChild(option);
-            document.getElementById('type_id').value = "";
-            document.getElementById('price').value = "";
-            document.getElementById('price_worker').value = "";
-            document.getElementById('count').value = "";
-            for (var i = 0; i < newServices.length; i++) {
-                if (newServices[i].tractor_id == tractor_id) {
-                    var option = document.createElement('option');
-                    option.value = newServices[i].id;
-                    option.innerHTML = newServices[i].name;
-                    select.appendChild(option);
-                }
-            }
-        }
-        function service(){
-            var service_id = document.getElementById('service_id').value;
-            var type_id = document.getElementById('type_id');
-            var price = document.getElementById('price');
-            var price_worker = document.getElementById('price_worker');
-            var count = document.getElementById('count');
-            for (var i = 0; i < newServices.length; i++) {
-                if (newServices[i].id == service_id) {
-                    type_id.value = types[newServices[i].type_id];
-                    price.value = newServices[i].price;
-                    price_worker.value = newServices[i].price_worker;
-                    count.value = newServices[i].count;
-                }
-            }
-        }
+
     </script>
 @endsection

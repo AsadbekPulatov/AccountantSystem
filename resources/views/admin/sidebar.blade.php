@@ -46,14 +46,15 @@
                             <p>{{ __("messages.users") }}</p>
                         </a>
                     </li>
+                @else
+                <li class="nav-item">
+                    <a href="{{ route('reports.index') }}"
+                       class="nav-link @if(request()->routeIs('reports.index')) active @endif ">
+                        <i class="fa fa-users nav-icon"></i>
+                        <p>{{ __("messages.reports") }}</p>
+                    </a>
+                </li>
                 @endif
-{{--                <li class="nav-item">--}}
-{{--                    <a href="{{ route('reports.index') }}"--}}
-{{--                       class="nav-link @if(request()->routeIs('reports.index')) active @endif ">--}}
-{{--                        <i class="fa fa-users nav-icon"></i>--}}
-{{--                        <p>{{ __("messages.reports") }}</p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
