@@ -15,7 +15,8 @@
                 <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ route('dashboard') }}" class="d-block">{{ \Illuminate\Support\Facades\Auth::user()->name }}</a>
+                <a href="{{ route('dashboard') }}"
+                   class="d-block">{{ \Illuminate\Support\Facades\Auth::user()->name }}</a>
             </div>
         </div>
 
@@ -24,13 +25,13 @@
         <nav class="mt-2">
 
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-{{--                <li class="nav-item">--}}
-{{--                    <a href="{{ route('dashboard') }}"--}}
-{{--                       class="nav-link @if(request()->routeIs('dashboard')) active @endif ">--}}
-{{--                        <i class="fa fa-users nav-icon"></i>--}}
-{{--                        <p>Dashboard</p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                {{--                <li class="nav-item">--}}
+                {{--                    <a href="{{ route('dashboard') }}"--}}
+                {{--                       class="nav-link @if(request()->routeIs('dashboard')) active @endif ">--}}
+                {{--                        <i class="fa fa-users nav-icon"></i>--}}
+                {{--                        <p>Dashboard</p>--}}
+                {{--                    </a>--}}
+                {{--                </li>--}}
                 <li class="nav-item">
                     <a href="{{ route('profile.edit') }}"
                        class="nav-link @if(request()->routeIs('profile.edit')) active @endif ">
@@ -47,13 +48,20 @@
                         </a>
                     </li>
                 @else
-                <li class="nav-item">
-                    <a href="{{ route('reports.index') }}"
-                       class="nav-link @if(request()->routeIs('reports.index')) active @endif ">
-                        <i class="fa fa-users nav-icon"></i>
-                        <p>{{ __("messages.reports") }}</p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reports.index') }}"
+                           class="nav-link @if(request()->routeIs('reports.index')) active @endif ">
+                            <i class="fa fa-users nav-icon"></i>
+                            <p>{{ __("messages.reports") }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('reports.calculate') }}"
+                           class="nav-link @if(request()->routeIs('reports.calculate')) active @endif ">
+                            <i class="fa fa-users nav-icon"></i>
+                            <p>{{ __("messages.reports.calculate") }}</p>
+                        </a>
+                    </li>
                 @endif
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="post">

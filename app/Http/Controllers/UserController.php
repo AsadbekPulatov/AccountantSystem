@@ -70,12 +70,26 @@ class UserController extends Controller
                 $table->increments('id');
                 $table->integer('n_id');
                 $table->integer('year');
-                $table->string('month');
+                $table->tinyInteger('month');
                 $table->string('title');
                 $table->integer('weight');
                 $table->integer('dt');
                 $table->integer('kt');
                 $table->float('price', 10, 2);
+                $table->timestamps();
+            });
+        }
+
+        $table = 'debts_'.$user->id;
+        if (!Schema::hasTable($table)) {
+            Schema::create($table, function ($table) {
+                $table->increments('id');
+                $table->integer('year');
+                $table->integer('dtkt');
+                $table->integer('dt_weight');
+                $table->float('dt_price', 10, 2);
+                $table->integer('kt_weight');
+                $table->float('kt_price', 10, 2);
                 $table->timestamps();
             });
         }

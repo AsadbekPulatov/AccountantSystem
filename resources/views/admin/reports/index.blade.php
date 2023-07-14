@@ -21,21 +21,35 @@
                                     @csrf
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="from_date">Санадан:</label>
-                                            <input type="date" name="from_date" class="form-control" id="from_date"
-                                                   required>
+                                            <label for="year">Йил:</label>
+                                            <select name="year" id="year" class="form-control form-select"
+                                                    onchange="selectYear()">
+                                                <option value="">Барчаси</option>
+                                                @foreach($years as $year)
+                                                    <option value="{{$year->year}}">{{$year->year}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="to_date">Санагача:</label>
-                                            <input type="date" name="to_date" class="form-control" id="to_date"
-                                                   required>
+                                            <label for="month">Ой:</label>
+                                            <select name="month" id="month" class="form-control form-select"
+                                                    onchange="selectMonth()">
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="n_id">ПРАВОДКА №:</label>
+                                            <select name="n_id" id="n_id" class="form-control form-select">
+
+                                            </select>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Бекор қилиш
+                                        <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">{{ __("messages.close") }}
                                         </button>
-                                        <button type="submit" class="btn btn-primary">Сақлаш</button>
+                                        <button type="submit" class="btn btn-primary">{{ __("messages.save") }}</button>
                                     </div>
                                 </form>
                             </div>
@@ -56,7 +70,8 @@
                             <i class="fa fa-filter"></i> {{ __("messages.filter") }}
                         </button>
                         <div>
-                            <a href="" class="btn btn-info ml-3"><i
+                            <a href="{{ route('download.report.write',['year' => $year, 'month' => $month, 'n_id' => $n_id]) }}"
+                               class="btn btn-info ml-3"><i
                                     class="fa fa-download"></i> {{ __("messages.download") }}</a>
                         </div>
                     </div>
@@ -80,7 +95,47 @@
                                 <tr>
                                     <td>{{$loop->index +1}}</td>
                                     <td>{{$item->n_id}}</td>
-                                    <td>{{$item->month}} {{$item->year}}</td>
+                                    <td>
+                                        @switch($item->month)
+                                            @case(1)
+                                                {{ __("messages.january") }}
+                                                @break
+                                            @case(2)
+                                                {{ __("messages.february") }}
+                                                @break
+                                            @case(3)
+                                                {{ __("messages.march") }}
+                                                @break
+                                            @case(4)
+                                                {{ __("messages.april") }}
+                                                @break
+                                            @case(5)
+                                                {{ __("messages.may") }}
+                                                @break
+                                            @case(6)
+                                                {{ __("messages.june") }}
+                                                @break
+                                            @case(7)
+                                                {{ __("messages.july") }}
+                                                @break
+                                            @case(8)
+                                                {{ __("messages.august") }}
+                                                @break
+                                            @case(9)
+                                                {{ __("messages.september") }}
+                                                @break
+                                            @case(10)
+                                                {{ __("messages.october") }}
+                                                @break
+                                            @case(11)
+                                                {{ __("messages.november") }}
+                                                @break
+                                            @case(12)
+                                                {{ __("messages.december") }}
+                                                @break
+                                        @endswitch
+                                        {{$item->year}}
+                                    </td>
                                     <td>{{$item->title}}</td>
                                     <td>{{$item->weight}}</td>
                                     <td>{{$item->dt}}</td>
@@ -112,4 +167,48 @@
         </div>
         <!-- /.col-md-6 -->
     </div>
+    <script>
+        function selectYear() {
+            let year = document.getElementById('year').value;
+            let month = document.getElementById('month');
+            let table = '{{ $table }} ';
+            let url = '{{ route('filter.selectYear') }}';
+            let url2 = url + '?year=' + year + '&table=' + table;
+            console.log(url2);
+            fetch(url2)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    let options = '<option value="0">Барчаси</option>';
+                    for (let i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].month + '">' + data[i].month + '</option>';
+                    }
+                    month.innerHTML = options;
+                });
+        }
+
+        function selectMonth() {
+            let year = document.getElementById('year').value;
+            let month = document.getElementById('month').value;
+            let n_id = document.getElementById('n_id');
+            let table = '{{ $table }} ';
+            let url = '{{ route('filter.selectMonth') }}';
+            let url2 = url + '?year=' + year + '&month=' + month + '&table=' + table;
+            console.log(url2);
+            fetch(url2)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    let options = '<option value="0">Барчаси</option>';
+                    for (let i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].n_id + '">' + data[i].n_id + '</option>';
+                    }
+                    n_id.innerHTML = options;
+                });
+        }
+    </script>
 @endsection

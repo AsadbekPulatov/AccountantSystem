@@ -19,12 +19,72 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function calculate(Request $request)
     {
-        $table = Auth::user()->table;
+        $dtkt = $request['dtkt'];
+        $table = 'reports_'.Auth::id();
+        $year = $request['year'];
+        $years = DB::table($table)->select('year')->distinct()->get();
+        if ($year == null)
+            $year = $years[0]->year;
+        $reports = DB::table($table)->select('*')->where('year', $year)->get();
+        $data = [];
+        foreach($reports as $report){
+            $data[$report->dt]['data'] = [];
+            $data[$report->dt]['dt_weight'] = 0;
+            $data[$report->kt]['dt_weight'] = 0;
+            $data[$report->dt]['kt_weight'] = 0;
+            $data[$report->kt]['kt_weight'] = 0;
+            $data[$report->dt]['dt_price'] = 0;
+            $data[$report->kt]['dt_price'] = 0;
+            $data[$report->dt]['kt_price'] = 0;
+            $data[$report->kt]['kt_price'] = 0;
+        }
+        foreach($reports as $report){
+            $data[$report->dt]['data'][] = $report;
+            $data[$report->kt]['data'][] = $report;
+            $data[$report->dt]['dt_weight'] += $report->weight;
+            $data[$report->kt]['kt_weight'] += $report->weight;
+            $data[$report->dt]['dt_price'] += $report->price;
+            $data[$report->kt]['kt_price'] += $report->price;
+        }
+        ksort($data);
+        if ($dtkt != null)
+        foreach ($data as $key => $value){
+            if (!in_array($key, $dtkt))
+                unset($data[$key]);
+        }
+        return view('admin.reports.calculate', [
+            'data' => $data,
+            'years' => $years,
+        ]);
+    }
+
+    public function index(Request $request)
+    {
+        $year = $request['year'];
+        $month = $request['month'];
+        $n_id = $request['n_id'];
+        $table = 'reports_'.Auth::id();
         if ($table != null) {
-            $reports = DB::table($table)->select('*')->get();
-            return view('admin.reports.index', compact('reports'));
+            if ($year != null && $month != null && $n_id != null)
+                $reports = DB::table($table)->select('*')->where('year', $year)->where('month', $month)->where('n_id', $n_id)->get();
+            else if ($year != null && $month != null)
+                $reports = DB::table($table)->select('*')->where('year', $year)->where('month', $month)->get();
+            else if ($year != null)
+                $reports = DB::table($table)->select('*')->where('year', $year)->get();
+            else
+                $reports = DB::table($table)->select('*')->get();
+            $years = DB::table($table)->select('year')->distinct()->get();
+            return view('admin.reports.index', [
+                'reports' => $reports,
+                'years' => $years,
+                'year' => $year,
+                'month' => $month,
+                'n_id' => $n_id,
+                'table' => $table,
+            ]);
         }
     }
 
@@ -48,6 +108,7 @@ class ReportController extends Controller
     {
         $data = [];
         for ($i = 0; $i < count($request['title']); $i++) {
+            $request['price'] = str_replace(',','.', $request['price']);
             $data[] = [
                 'n_id' => $request['n_id'],
                 'year' => $request['year'],
@@ -59,7 +120,7 @@ class ReportController extends Controller
                 'price' => $request['price'][$i],
             ];
         }
-        $table = Auth::user()->table;
+        $table = 'reports_'.Auth::id();
         DB::table($table)->insert($data);
         return redirect()->route('reports.index')->with('success', 'Report created successfully');
     }
@@ -83,7 +144,7 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        $table = Auth::user()->table;
+        $table = 'reports_'.Auth::id();
         $report = DB::table($table)->find($id);
         return view('admin.reports.edit', compact('report'));
     }
@@ -97,7 +158,7 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $table = Auth::user()->table;
+        $table = 'reports_'.Auth::id();
         DB::table($table)->where('id', $id)->update([
             'n_id' => $request['n_id'],
             'year' => $request['year'],
@@ -119,7 +180,7 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        $table = Auth::user()->table;
+        $table = 'reports_'.Auth::id();
         DB::table($table)->where('id', $id)->delete();
         return redirect()->route('reports.index')->with('success', 'Report deleted successfully');
     }

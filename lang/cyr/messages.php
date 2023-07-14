@@ -14,6 +14,7 @@ return [
 
     //   headers and menus
     'reports' => "Бажарилган ишлар",
+    'reports.calculate' => "Дт Кт ҳисоблаш",
 
     'users' => "Фойдаланувчилар",
     'user' => "Фойдаланувчи",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
@@ -25,6 +26,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/download/report/write', [DownloadController::class, 'write'])->name('download.report.write');
+    Route::get('/reports/calculate', [ReportController::class, 'calculate'])->name('reports.calculate');
     Route::resource('users', UserController::class);
     Route::resource('reports', ReportController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
