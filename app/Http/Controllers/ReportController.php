@@ -23,12 +23,24 @@ class ReportController extends Controller
     public function calculate(Request $request)
     {
         $dtkt = $request['dtkt'];
-        $table = 'reports_'.Auth::id();
         $year = $request['year'];
+
+        $table = 'debts_'.Auth::id();
+        $years = DB::table($table)->distinct('year')->pluck('year');
+        if ($year == null)
+            $year = $years->first();
+        $debts = DB::table($table)->select('*')->where('year', $year)->get();
+        $debt = [];
+        foreach ($debts as $item){
+            $debt[$item->dtkt] = $item;
+        }
+
+        $table = 'reports_'.Auth::id();
         $years = DB::table($table)->distinct('year')->pluck('year');
         if ($year == null)
             $year = $years->first();
         $reports = DB::table($table)->select('*')->where('year', $year)->get();
+
         $data = [];
         foreach($reports as $report){
             $data[$report->dt]['data'] = [];
@@ -52,12 +64,15 @@ class ReportController extends Controller
         ksort($data);
         if ($dtkt != null)
         foreach ($data as $key => $value){
-            if (!in_array($key, $dtkt))
+            if (!in_array($key, $dtkt)){
                 unset($data[$key]);
+                unset($debt[$key]);
+            }
         }
         return view('admin.reports.calculate', [
             'data' => $data,
             'years' => $years,
+            'debt' => $debt,
         ]);
     }
 

@@ -92,6 +92,46 @@
                                 <tr class="table-row">
                                     <td colspan="8">СЧЁТ № {{ $key }}</td>
                                 </tr>
+                                <tr class="table-row">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        @if(isset($debt[$key]->year))
+                                            01.01.{{ $debt[$key]->year }} - йилга колдик
+                                        @else
+                                            01.01.{{ $item['data'][0]->year }} - йилга колдик
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($debt[$key]->dt_weight))
+                                            {{ $debt[$key]->dt_weight }}
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($debt[$key]->dt_price))
+                                            {{ $debt[$key]->dt_price }}
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($debt[$key]->kt_weight))
+                                            {{ $debt[$key]->kt_weight }}
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($debt[$key]->kt_price))
+                                            {{ $debt[$key]->kt_price }}
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                </tr>
                                 @foreach($item['data'] as $value)
                                     <tr>
                                         <td>{{ $key }}</td>
@@ -148,7 +188,7 @@
                                         </td>
                                         <td>
                                             @if ($key == $value->dt)
-                                                {{number_format($value->price, 0, ' ', ' ')}}
+                                                {{number_format($value->price, 2, ',', ' ')}}
                                             @else
                                                 0
                                             @endif
@@ -162,7 +202,7 @@
                                         </td>
                                         <td>
                                             @if ($key == $value->kt)
-                                                {{number_format($value->price, 0, ' ', ' ')}}
+                                                {{number_format($value->price, 2, ',', ' ')}}
                                             @else
                                                 0
                                             @endif
@@ -175,9 +215,9 @@
                                     <td></td>
                                     <td>оборот</td>
                                     <td>{{$item['dt_weight']}}</td>
-                                    <td>{{number_format($item['dt_price'], 0, ' ', ' ')}}</td>
+                                    <td>{{number_format($item['dt_price'], 2, ',', ' ')}}</td>
                                     <td>{{$item['kt_weight']}}</td>
-                                    <td>{{number_format($item['kt_price'], 0, ' ', ' ')}}</td>
+                                    <td>{{number_format($item['kt_price'], 2, ',', ' ')}}</td>
                                 </tr>
                                 <tr class="table-row">
                                     <td></td>
@@ -185,31 +225,48 @@
                                     <td></td>
                                     <td>01.01.{{ $value->year + 1 }} - йилга колдик</td>
                                     <td>
-                                        @if ($item['dt_weight'] > $item['kt_weight'])
-                                            {{$item['dt_weight'] - $item['kt_weight']}}
+                                        @if(isset($debt[$key]->dt_weight))
+                                            {{$item['dt_weight'] + $debt[$key]->dt_weight - $item['kt_weight']}}
                                         @else
-                                            0
+                                            @if ($item['dt_weight'] > $item['kt_weight'])
+                                                {{$item['dt_weight'] - $item['kt_weight']}}
+                                            @else
+                                                0
+                                            @endif
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        @if(isset($debt[$key]->dt_price))
+                                            {{$item['dt_price'] + $debt[$key]->dt_price - $item['kt_price']}}
+                                        @else
+                                            @if ($item['dt_price'] > $item['kt_price'])
+                                                {{number_format($item['dt_price'] - $item['kt_price'], 2, ',', ' ')}}
+                                            @else
+                                                0,00
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($item['dt_price'] > $item['kt_price'])
-                                            {{number_format($item['dt_price'] - $item['kt_price'], 0, ' ', ' ')}}
+                                        @if(isset($debt[$key]->kt_weight))
+                                            {{$item['kt_weight'] + $debt[$key]->kt_weight - $debt[$key]->dt_weight}}
                                         @else
-                                            0
+                                            @if ($item['kt_weight'] > $item['dt_weight'])
+                                                {{$item['kt_weight'] - $item['dt_weight']}}
+                                            @else
+                                                0
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($item['kt_weight'] > $item['dt_weight'])
-                                            {{$item['kt_weight'] - $item['dt_weight']}}
+                                        @if(isset($debt[$key]->kt_price))
+                                            {{$item['kt_price'] + $debt[$key]->kt_price - $debt[$key]->dt_price}}
                                         @else
-                                            0
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($item['kt_price'] > $item['dt_price'])
-                                            {{number_format($item['kt_price'] - $item['dt_price'], 0, ' ', ' ')}}
-                                        @else
-                                            0
+                                            @if ($item['kt_price'] > $item['dt_price'])
+                                                {{number_format($item['kt_price'] - $item['dt_price'], 2, ',', ' ')}}
+                                            @else
+                                                0,00
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>

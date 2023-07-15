@@ -140,7 +140,7 @@
                                     <td>{{$item->weight}}</td>
                                     <td>{{$item->dt}}</td>
                                     <td>{{$item->kt}}</td>
-                                    <td>{{number_format($item->price, 0, ' ', ' ')}}</td>
+                                    <td>{{number_format($item->price, 2, ',', ' ')}}</td>
                                     <td class="d-flex justify-content-center">
 
                                         <a href="{{ route('reports.edit', $item->id) }}" class="btn btn-warning">
