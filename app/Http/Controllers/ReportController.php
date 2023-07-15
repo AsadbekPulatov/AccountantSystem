@@ -25,9 +25,9 @@ class ReportController extends Controller
         $dtkt = $request['dtkt'];
         $table = 'reports_'.Auth::id();
         $year = $request['year'];
-        $years = DB::table($table)->select('year')->distinct()->get();
+        $years = DB::table($table)->distinct('year')->pluck('year');
         if ($year == null)
-            $year = $years[0]->year;
+            $year = $years->first();
         $reports = DB::table($table)->select('*')->where('year', $year)->get();
         $data = [];
         foreach($reports as $report){
@@ -61,31 +61,85 @@ class ReportController extends Controller
         ]);
     }
 
+//    public function calculate(Request $request)
+//    {
+//        $table = 'reports_' . Auth::id();
+//        $year = $request->input('year');
+//        $years = DB::table($table)->distinct('year')->pluck('year');
+//
+//        if ($year == null) {
+//            $year = $years->first();
+//        }
+//
+//        $reports = DB::table($table)
+//            ->select('*')
+//            ->where('year', $year)
+//            ->get();
+//
+//        $data = $reports->groupBy(function ($report) {
+//            return $report->dt;
+//        })->map(function ($group) {
+//            return [
+//                'data' => $group,
+//                'dt_weight' => $group->sum('weight'),
+//                'kt_weight' => 0,
+//                'dt_price' => $group->sum('price'),
+//                'kt_price' => 0,
+//            ];
+//        })->toArray();
+//
+//        foreach ($reports->groupBy('kt') as $key => $group) {
+//            if (isset($data[$key])) {
+//                $data[$key]['kt_weight'] = $group->sum('weight');
+//                $data[$key]['kt_price'] = $group->sum('price');
+//            } else {
+//                $data[$key] = [
+//                    'data' => $group,
+//                    'dt_weight' => 0,
+//                    'kt_weight' => $group->sum('weight'),
+//                    'dt_price' => 0,
+//                    'kt_price' => $group->sum('price'),
+//                ];
+//            }
+//        }
+//
+//        ksort($data);
+//
+//        if ($request->has('dtkt')) {
+//            $dtkt = $request->input('dtkt');
+//            $data = array_intersect_key($data, array_flip($dtkt));
+//        }
+//
+//        return view('admin.reports.calculate', compact('data', 'years'));
+//    }
+
+
     public function index(Request $request)
     {
         $year = $request['year'];
         $month = $request['month'];
         $n_id = $request['n_id'];
         $table = 'reports_'.Auth::id();
-        if ($table != null) {
-            if ($year != null && $month != null && $n_id != null)
-                $reports = DB::table($table)->select('*')->where('year', $year)->where('month', $month)->where('n_id', $n_id)->get();
-            else if ($year != null && $month != null)
-                $reports = DB::table($table)->select('*')->where('year', $year)->where('month', $month)->get();
-            else if ($year != null)
-                $reports = DB::table($table)->select('*')->where('year', $year)->get();
-            else
-                $reports = DB::table($table)->select('*')->get();
-            $years = DB::table($table)->select('year')->distinct()->get();
-            return view('admin.reports.index', [
-                'reports' => $reports,
-                'years' => $years,
-                'year' => $year,
-                'month' => $month,
-                'n_id' => $n_id,
-                'table' => $table,
-            ]);
+
+        $query = DB::table($table)->select('*');
+
+        if ($year != null) {
+            $query->where('year', $year);
         }
+
+        if ($month != null) {
+            $query->where('month', $month);
+        }
+
+        if ($n_id != null) {
+            $query->where('n_id', $n_id);
+        }
+
+        $reports = $query->get();
+
+        $years = DB::table($table)->select('year')->distinct()->get();
+
+        return view('admin.reports.index', compact('reports', 'years', 'year', 'month', 'n_id', 'table'));
     }
 
     /**

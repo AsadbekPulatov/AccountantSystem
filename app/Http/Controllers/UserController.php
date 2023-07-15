@@ -94,7 +94,6 @@ class UserController extends Controller
             });
         }
 
-        $user->table = $table;
         $user->status = ! $user->status;
         $user->save();
 
@@ -123,6 +122,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         Schema::dropIfExists('reports_'.$user->id);
+        Schema::dropIfExists('debts_'.$user->id);
         $user->delete();
         return redirect()->back();
     }

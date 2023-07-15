@@ -32,7 +32,7 @@
                                                     onchange="find()">
                                                 <option value="">Барчаси</option>
                                                 @foreach($years as $year)
-                                                    <option value="{{$year->year}}">{{$year->year}}</option>
+                                                    <option value="{{$year}}">{{$year}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -230,7 +230,7 @@
 
         function find() {
             let year = $('#year').val();
-            let table = '{{ \Illuminate\Support\Facades\Auth::user()->table }}';
+            let table = 'reports_{{ \Illuminate\Support\Facades\Auth::id() }}';
             $.ajax({
                 url: "{{ route('filter.findDtKt') }}",
                 type: "GET",

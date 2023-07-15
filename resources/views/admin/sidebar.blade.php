@@ -62,6 +62,13 @@
                             <p>{{ __("messages.reports.calculate") }}</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('debts.index') }}"
+                           class="nav-link @if(request()->routeIs('debts.index')) active @endif ">
+                            <i class="fa fa-users nav-icon"></i>
+                            <p>{{ __("messages.debts") }}</p>
+                        </a>
+                    </li>
                 @endif
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="post">
