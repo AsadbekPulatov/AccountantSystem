@@ -45,7 +45,46 @@
         </div>
         <div class="row-item-2">
             <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
-            <p>{{ $year['year'] }} - йил {{  $month }} ойи</p>
+            <p>{{ $year['year'] }} - йил
+                @switch($month)
+                    @case(1)
+                        {{ __("messages.january") }}
+                        @break
+                    @case(2)
+                        {{ __("messages.february") }}
+                        @break
+                    @case(3)
+                        {{ __("messages.march") }}
+                        @break
+                    @case(4)
+                        {{ __("messages.april") }}
+                        @break
+                    @case(5)
+                        {{ __("messages.may") }}
+                        @break
+                    @case(6)
+                        {{ __("messages.june") }}
+                        @break
+                    @case(7)
+                        {{ __("messages.july") }}
+                        @break
+                    @case(8)
+                        {{ __("messages.august") }}
+                        @break
+                    @case(9)
+                        {{ __("messages.september") }}
+                        @break
+                    @case(10)
+                        {{ __("messages.october") }}
+                        @break
+                    @case(11)
+                        {{ __("messages.november") }}
+                        @break
+                    @case(12)
+                        {{ __("messages.december") }}
+                        @break
+                @endswitch
+                ойи</p>
         </div>
     </div>
     <table border="1" cellspacing="0" cellpadding="5">
