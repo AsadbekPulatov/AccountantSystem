@@ -54,6 +54,8 @@ class ReportController extends Controller
             'data' => $data,
             'years' => $years,
             'debt' => $debt,
+            'year' => $year,
+            'dtkt' => $dtkt,
         ]);
     }
 

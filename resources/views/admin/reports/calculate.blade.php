@@ -68,7 +68,7 @@
                             <i class="fa fa-filter"></i> {{ __("messages.filter") }}
                         </button>
                         <div>
-                            <a href="" class="btn btn-info ml-3"><i
+                            <a href="{{ route('download.report.calculate', ['year' => $year, 'dtkt' => $dtkt]) }}" class="btn btn-info ml-3"><i
                                     class="fa fa-download"></i> {{ __("messages.download") }}</a>
                         </div>
                     </div>
