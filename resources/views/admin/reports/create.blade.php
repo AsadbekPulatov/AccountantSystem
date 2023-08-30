@@ -72,6 +72,7 @@
             TitleElement.setAttribute('class' , 'form-control col-4 ml-1');
             TitleElement.setAttribute('name' , 'title[]');
             TitleElement.setAttribute('placeholder' , 'Мазмуни');
+            TitleElement.setAttribute('required' , 'true');
             rowContainer.appendChild(TitleElement);
 
             var WeightElement = document.createElement('input');
@@ -79,6 +80,8 @@
             WeightElement.setAttribute('class' , 'form-control col-1 ml-1');
             WeightElement.setAttribute('name' , 'weight[]');
             WeightElement.setAttribute('placeholder' , 'КГ');
+            WeightElement.setAttribute('value' , '0');
+            WeightElement.setAttribute('required' , 'true');
             rowContainer.appendChild(WeightElement);
 
             var DtElement = document.createElement('input');
@@ -86,6 +89,7 @@
             DtElement.setAttribute('class' , 'form-control col-2 ml-1');
             DtElement.setAttribute('name' , 'dt[]');
             DtElement.setAttribute('placeholder' , 'ДТ');
+            DtElement.setAttribute('required' , 'true');
             rowContainer.appendChild(DtElement);
 
             var KtElement = document.createElement('input');
@@ -93,6 +97,7 @@
             KtElement.setAttribute('class' , 'form-control col-2 ml-1');
             KtElement.setAttribute('name' , 'kt[]');
             KtElement.setAttribute('placeholder' , 'КТ');
+            KtElement.setAttribute('required' , 'true');
             rowContainer.appendChild(KtElement);
 
             var PriceElement = document.createElement('input');
@@ -100,6 +105,7 @@
             PriceElement.setAttribute('class' , 'form-control col-2 ml-1');
             PriceElement.setAttribute('name' , 'price[]');
             PriceElement.setAttribute('placeholder' , 'Суммаси');
+            PriceElement.setAttribute('required' , 'true');
             rowContainer.appendChild(PriceElement);
 
             // Append the row container to the grid container

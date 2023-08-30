@@ -97,7 +97,7 @@ class ReportController extends Controller
                 'year' => $request['year'],
                 'month' => $request['month'],
                 'title' => $request['title'][$i],
-                'weight' => $request['weight'][$i],
+                'weight' => $request['weight'][$i] ?? 0,
                 'dt' => $request['dt'][$i],
                 'kt' => $request['kt'][$i],
                 'price' => $request['price'][$i],
