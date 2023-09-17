@@ -68,7 +68,13 @@ class ReportController extends Controller
         $table = 'reports_'.Auth::id();
         $reports = $report->write($year, $month, $n_id, $table);
         $years = DB::table($table)->select('year')->distinct()->get();
-        return view('admin.reports.index', compact('reports', 'years', 'year', 'month', 'n_id', 'table'));
+        $sum['price'] = 0;
+        $sum['weight'] = 0;
+        foreach ($reports as $item){
+            $sum['price'] += $item->price;
+            $sum['weight'] += $item->weight;
+        }
+        return view('admin.reports.index', compact('reports', 'years', 'year', 'month', 'n_id', 'table', 'sum'));
     }
 
     /**

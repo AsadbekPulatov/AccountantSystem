@@ -14,7 +14,7 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="form-group w-100">
-                                    <label for="dtkt">Дт Кт:</label>
+                                    <label for="dtkt">Счёт раками:</label>
                                     <input type="number" name="dtkt" class="form-control" id="dtkt" required value="{{ $debt->dtkt }}">
                                 </div>
                                 <div class="form-group w-100 ml-3">

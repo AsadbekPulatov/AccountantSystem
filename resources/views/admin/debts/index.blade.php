@@ -20,7 +20,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Дт Кт</th>
+                                <th>Счёт раками</th>
                                 <th>Йил</th>
                                 <th>Дт мик</th>
                                 <th>Дт сумма</th>
@@ -36,9 +36,9 @@
                                     <td>{{$item->dtkt}}</td>
                                     <td>{{$item->year}}</td>
                                     <td>{{$item->dt_weight}}</td>
-                                    <td>{{number_format($item->dt_price, 0, ' ', ' ')}}</td>
+                                    <td>{{number_format($item->dt_price, 2, ',', ' ')}}</td>
                                     <td>{{$item->kt_weight}}</td>
-                                    <td>{{number_format($item->kt_price, 0, ' ', ' ')}}</td>
+                                    <td>{{number_format($item->kt_price, 2, ',', ' ')}}</td>
                                     <td class="d-flex justify-content-center">
 
                                         <a href="{{ route('debts.edit', $item->id) }}" class="btn btn-warning">

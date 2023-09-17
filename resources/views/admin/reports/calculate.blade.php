@@ -59,12 +59,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex mb-3">
-                        <div>
-                            <a href="{{ route('reports.create') }}" class="btn btn-success">
-                                <i class="fa fa-plus"></i> {{ __("messages.add") }}
-                            </a>
-                        </div>
-                        <button type="button" class="ml-3 btn btn-info" data-toggle="modal" data-target="#modal-create">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-create">
                             <i class="fa fa-filter"></i> {{ __("messages.filter") }}
                         </button>
                         <div>

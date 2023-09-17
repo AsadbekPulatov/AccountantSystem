@@ -25,7 +25,13 @@ class DownloadController extends Controller
         $table = 'reports_' . Auth::id();
         $reports = $report->write($year, $month, $n_id, $table);
         $years = DB::table($table)->select('year')->distinct()->get();
-        $pdf = Pdf::loadView('admin.downloads.report_write', compact('reports', 'years', 'year', 'month', 'n_id', 'table'));
+        $sum['price'] = 0;
+        $sum['weight'] = 0;
+        foreach ($reports as $item){
+            $sum['price'] += $item->price;
+            $sum['weight'] += $item->weight;
+        }
+        $pdf = Pdf::loadView('admin.downloads.report_write', compact('reports', 'sum','years', 'year', 'month', 'n_id', 'table'));
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('Праводка '. \Illuminate\Support\Facades\Auth::user()->name.'('.$years[0]->year.')'.'.pdf');
     }

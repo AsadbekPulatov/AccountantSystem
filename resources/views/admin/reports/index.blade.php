@@ -1,5 +1,4 @@
 @extends('admin.master')
-{{--@section('title', 'Бажарилган ишлар')--}}
 @section('content')
     <div class="row">
         <div class="col">
@@ -86,7 +85,7 @@
                                 <th>КГ</th>
                                 <th>ДТ</th>
                                 <th>КТ</th>
-                                <th>Нархи</th>
+                                <th>Суммаси</th>
                                 <th>Амаллар</th>
                             </tr>
                             </thead>
@@ -158,6 +157,15 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            <tr class="text-bold">
+                                <td colspan="3">ЖАМИ</td>
+                                <td></td>
+                                <td>{{ number_format($sum['weight'], 0, ',', '') }}</td>
+                                <td>X</td>
+                                <td>X</td>
+                                <td>{{ number_format($sum['price'], 2, ',', ' ') }}</td>
+                                <td></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

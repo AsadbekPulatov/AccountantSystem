@@ -13,7 +13,7 @@ return [
     'download' => "Юклаб олиш",
 
     //   headers and menus
-    'reports' => "Бажарилган ишлар",
+    'reports' => "Праводка",
     'reports.calculate' => "Дт Кт ҳисоблаш",
 
     'debts' => "Колдиқлар",

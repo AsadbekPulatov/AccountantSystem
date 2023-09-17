@@ -1,11 +1,10 @@
 @extends('admin.master')
-{{--@section('title', 'Бажарилган ишларни таҳрирлаш')--}}
 @section('content')
     <div class="row">
         <div class="col">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title" style="font-size: x-large">Бажарилган ишларни таҳрирлаш</h3>
+                    <h3 class="card-title" style="font-size: x-large">Праводкани таҳрирлаш</h3>
                 </div>
 {{--                <div class="card-body">--}}
                     <form method="post" action="{{route('reports.update', $report->id)}}" id="form">
@@ -26,19 +25,18 @@
                                 <div class="form-group w-100 ml-3">
                                     <label for="month">Ой:</label>
                                     <select name="month" class="form-control form-select" id="month" required>
-                                        <option value="{{ __("messages.january") }}">{{ __("messages.january") }}</option>
-                                        <option value="{{ __("messages.february") }}">{{ __("messages.february") }}</option>
-                                        <option value="{{ __("messages.march") }}">{{ __("messages.march") }}</option>
-                                        <option value="{{ __("messages.april") }}">{{ __("messages.april") }}</option>
-                                        <option value="{{ __("messages.may") }}">{{ __("messages.may") }}</option>
-                                        <option value="{{ __("messages.june") }}">{{ __("messages.june") }}</option>
-                                        <option value="{{ __("messages.july") }}">{{ __("messages.july") }}</option>
-                                        <option value="{{ __("messages.august") }}">{{ __("messages.august") }}</option>
-                                        <option
-                                            value="{{ __("messages.september") }}">{{ __("messages.september") }}</option>
-                                        <option value="{{ __("messages.october") }}">{{ __("messages.october") }}</option>
-                                        <option value="{{ __("messages.november") }}">{{ __("messages.november") }}</option>
-                                        <option value="{{ __("messages.december") }}">{{ __("messages.december") }}</option>
+                                        <option value="1">{{ __("messages.january") }}</option>
+                                        <option value="2">{{ __("messages.february") }}</option>
+                                        <option value="3">{{ __("messages.march") }}</option>
+                                        <option value="4">{{ __("messages.april") }}</option>
+                                        <option value="5">{{ __("messages.may") }}</option>
+                                        <option value="6">{{ __("messages.june") }}</option>
+                                        <option value="7">{{ __("messages.july") }}</option>
+                                        <option value="8">{{ __("messages.august") }}</option>
+                                        <option value="9">{{ __("messages.september") }}</option>
+                                        <option value="10">{{ __("messages.october") }}</option>
+                                        <option value="11">{{ __("messages.november") }}</option>
+                                        <option value="12">{{ __("messages.december") }}</option>
                                     </select>
                                 </div>
                             </div>

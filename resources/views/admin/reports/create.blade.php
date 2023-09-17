@@ -1,11 +1,10 @@
 @extends('admin.master')
-{{--@section('title', 'Бажарилган ишларни киритиш')--}}
 @section('content')
     <div class="row">
         <div class="col">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title" style="font-size: x-large">Бажарилган ишларни киритиш</h3>
+                    <h3 class="card-title" style="font-size: x-large">Праводка кўшиш</h3>
                 </div>
                 {{--                <div class="card-body">--}}
                 <form method="post" action="{{route('reports.store')}}" id="form">
