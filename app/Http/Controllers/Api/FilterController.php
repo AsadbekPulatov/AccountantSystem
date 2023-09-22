@@ -26,15 +26,18 @@ class FilterController extends Controller
         return response()->json($reports);
     }
 
-    public function findDtKt(Request $request){
+    public function findDtKt(Request $request)
+    {
         $table = $request->table;
         $year = $request->year;
         $debts_table = $request->debts_table;
         $reports = DB::table($table)->select('dt', 'kt')->where('year', $year)->get();
         $array = [];
-        foreach($reports as $report){
-            $array[] = $report->dt;
-            $array[] = $report->kt;
+        if ($request['page'] != "debt") {
+            foreach ($reports as $report) {
+                $array[] = $report->dt;
+                $array[] = $report->kt;
+            }
         }
         $debts = DB::table($debts_table)->where('year', $year)->get();
         foreach ($debts as $debt)

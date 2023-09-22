@@ -36,7 +36,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Multiple</label>
+                                            <label>Счёт раками</label>
                                             <select id="dtkt" class="select2" name="dtkt[]" multiple="multiple"
                                                     data-placeholder="Барчаси" style="width: 100%;">
                                             </select>
@@ -83,7 +83,7 @@
                             </thead>
                             <tbody>
                             @foreach($data as $key => $item)
-                                <tr class="table-row">
+                                <tr class="table-row bg-warning">
                                     <td colspan="8">СЧЁТ № {{ $key }}</td>
                                 </tr>
                                 <tr class="table-row">
@@ -296,7 +296,7 @@
             $.ajax({
                 url: "{{ route('filter.findDtKt') }}",
                 type: "GET",
-                data: {year: year, table: table, debts_table: debts_table},
+                data: {year: year, table: table, debts_table: debts_table, page: "dtkt"},
                 success: function (data) {
                     $('#dtkt').empty();
                     $.each(data, function (key, value) {

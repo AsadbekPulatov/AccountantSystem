@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,17 +14,21 @@ class DebtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $debt = new Report();
+        $year = $request['year'];
+        $dtkt = $request['dtkt'];
         $table = 'debts_'.Auth::id();
-        $debts = DB::table($table)->orderBy('year', 'DESC')->get();
+        $debts = $debt->debt($year, $dtkt, $table);
+        $years = DB::table($table)->select('year')->distinct('year')->pluck('year');
         $sum['dt_price'] = 0;
         $sum['kt_price'] = 0;
         foreach ($debts as $debt){
             $sum['dt_price']+=$debt->dt_price;
             $sum['kt_price']+=$debt->kt_price;
         }
-        return view('admin.debts.index', compact('debts','sum'));
+        return view('admin.debts.index', compact('debts','sum', 'years', 'year', 'dtkt'));
     }
 
     /**

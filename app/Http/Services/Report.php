@@ -56,4 +56,19 @@ class Report
         }
         return $data;
     }
+
+    public function debt($year, $dtkt, $table){
+        $query = DB::table($table)->select('*');
+
+        if ($year != null) {
+            $query->where('year', $year);
+        }
+
+        if ($dtkt != null) {
+            $query->whereIn('dtkt', $dtkt);
+        }
+
+        $debts = $query->get();
+        return $debts;
+    }
 }

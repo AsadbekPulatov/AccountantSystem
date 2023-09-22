@@ -50,7 +50,7 @@
         </thead>
         <tbody>
         @foreach($data as $key => $item)
-            <tr class="table-row">
+            <tr class="table-row" style="background-color: yellow">
                 <td colspan="8">СЧЁТ № {{ $key }}</td>
             </tr>
             <tr class="table-row">

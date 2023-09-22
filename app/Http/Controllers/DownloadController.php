@@ -87,4 +87,26 @@ class DownloadController extends Controller
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream(Auth::user()->name.$year.'.pdf');
     }
+
+    public function debt(Request $request){
+        $debt = new Report();
+        $year = $request['year'];
+        $dtkt = $request['dtkt'];
+        $table = 'debts_'.Auth::id();
+        $debts = $debt->debt($year, $dtkt, $table);
+        $years = DB::table($table)->select('year')->distinct('year')->pluck('year');
+        $sum['dt_price'] = 0;
+        $sum['kt_price'] = 0;
+        foreach ($debts as $debt){
+            $sum['dt_price']+=$debt->dt_price;
+            $sum['kt_price']+=$debt->kt_price;
+        }
+        $pdf = Pdf::loadView('admin.downloads.report_debts', [
+            'debts' => $debts,
+            'year' => $year,
+            'sum' => $sum,
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream(Auth::user()->name.$year.'.pdf');
+    }
 }

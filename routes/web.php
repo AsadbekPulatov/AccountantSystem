@@ -29,6 +29,8 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/download/report/write', [DownloadController::class, 'write'])->name('download.report.write');
     Route::get('/download/report/calculate', [DownloadController::class, 'calculate'])->name('download.report.calculate');
+    Route::get('/download/report/debts', [DownloadController::class, 'debt'])->name('download.report.debts');
+
     Route::get('/reports/calculate', [ReportController::class, 'calculate'])->name('reports.calculate');
     Route::resource('users', UserController::class);
     Route::resource('reports', ReportController::class);
