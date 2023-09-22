@@ -41,8 +41,6 @@ class ReportController extends Controller
         foreach ($debts as $item){
             $debt[$item->dtkt] = $item;
         }
-
-        ksort($data);
         if ($dtkt != null)
         foreach ($data as $key => $value){
             if (!in_array($key, $dtkt)){
@@ -50,6 +48,19 @@ class ReportController extends Controller
                 unset($debt[$key]);
             }
         }
+        foreach ($debt as $key => $item){
+            if (!isset($data[$key])){
+                $data[$key] = [
+                    'data' => [],
+                    'dt_weight' => 0,
+                    'kt_weight' => 0,
+                    'dt_price' => 0,
+                    'kt_price' => 0,
+                ];
+            }
+        }
+        ksort($data);
+//        dd($data, $debt);
         return view('admin.reports.calculate', [
             'data' => $data,
             'years' => $years,
@@ -67,7 +78,7 @@ class ReportController extends Controller
         $n_id = $request['n_id'];
         $table = 'reports_'.Auth::id();
         $reports = $report->write($year, $month, $n_id, $table);
-        $years = DB::table($table)->select('year')->distinct()->get();
+        $years = DB::table($table)->orderBy('year')->select('year')->distinct()->get();
         $sum['price'] = 0;
         $sum['weight'] = 0;
         foreach ($reports as $item){

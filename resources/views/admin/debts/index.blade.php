@@ -56,6 +56,14 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            <tr class="text-bold">
+                                <td colspan="3">ЖАМИ</td>
+                                <td></td>
+                                <td>{{number_format($sum['dt_price'], 2, ',', ' ')}}</td>
+                                <td></td>
+                                <td>{{number_format($sum['kt_price'], 2, ',', ' ')}}</td>
+                                <td class="d-flex justify-content-center"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

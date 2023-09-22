@@ -17,7 +17,13 @@ class DebtController extends Controller
     {
         $table = 'debts_'.Auth::id();
         $debts = DB::table($table)->orderBy('year', 'DESC')->get();
-        return view('admin.debts.index', compact('debts'));
+        $sum['dt_price'] = 0;
+        $sum['kt_price'] = 0;
+        foreach ($debts as $debt){
+            $sum['dt_price']+=$debt->dt_price;
+            $sum['kt_price']+=$debt->kt_price;
+        }
+        return view('admin.debts.index', compact('debts','sum'));
     }
 
     /**

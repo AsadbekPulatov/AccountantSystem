@@ -57,7 +57,6 @@ class DownloadController extends Controller
             $debt[$item->dtkt] = $item;
         }
 
-        ksort($data);
         if ($dtkt != null)
             foreach ($data as $key => $value) {
                 if (!in_array($key, $dtkt)) {
@@ -66,6 +65,18 @@ class DownloadController extends Controller
                 }
             }
 
+        foreach ($debt as $key => $item){
+            if (!isset($data[$key])){
+                $data[$key] = [
+                    'data' => [],
+                    'dt_weight' => 0,
+                    'kt_weight' => 0,
+                    'dt_price' => 0,
+                    'kt_price' => 0,
+                ];
+            }
+        }
+        ksort($data);
         $pdf = Pdf::loadView('admin.downloads.report_calculate', [
             'data' => $data,
             'years' => $years,

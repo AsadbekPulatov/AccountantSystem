@@ -51,7 +51,7 @@
     </div>
     <div class="row-item-2">
         <p>{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
-        <p>{{ $year['year'] }} - йил
+        <p>{{ $year }} - йил
             @switch($month)
                 @case(1)
                     {{ __("messages.january") }}

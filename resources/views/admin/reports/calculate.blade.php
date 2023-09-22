@@ -30,8 +30,8 @@
                                             <select name="year" id="year" class="form-control form-select"
                                                     onchange="find()">
                                                 <option value="">Барчаси</option>
-                                                @foreach($years as $year)
-                                                    <option value="{{$year}}">{{$year}}</option>
+                                                @foreach($years as $item)
+                                                    <option value="{{$item}}">{{$item}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -217,7 +217,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>01.01.{{ $value->year + 1 }} - йилга колдик</td>
+                                    <td>01.01.{{ $year + 1 }} - йилга колдик</td>
                                     <?php
                                     if (!isset($debt[$key]->dt_weight)) {
                                         $dt_weight = 0;
@@ -292,10 +292,11 @@
         function find() {
             let year = $('#year').val();
             let table = 'reports_{{ \Illuminate\Support\Facades\Auth::id() }}';
+            let debts_table = 'debts_{{ \Illuminate\Support\Facades\Auth::id() }}';
             $.ajax({
                 url: "{{ route('filter.findDtKt') }}",
                 type: "GET",
-                data: {year: year, table: table},
+                data: {year: year, table: table, debts_table: debts_table},
                 success: function (data) {
                     $('#dtkt').empty();
                     $.each(data, function (key, value) {

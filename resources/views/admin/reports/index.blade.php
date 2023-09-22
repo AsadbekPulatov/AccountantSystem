@@ -17,15 +17,15 @@
                             </div>
                             <div class="modal-body">
                                 <form method="get" action="{{ route('reports.index') }}" id="form">
-                                    @csrf
+{{--                                    @csrf--}}
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="year">Йил:</label>
                                             <select name="year" id="year" class="form-control form-select"
                                                     onchange="selectYear()">
                                                 <option value="">Барчаси</option>
-                                                @foreach($years as $year)
-                                                    <option value="{{$year->year}}">{{$year->year}}</option>
+                                                @foreach($years as $item)
+                                                    <option value="{{$item->year}}">{{$item->year}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

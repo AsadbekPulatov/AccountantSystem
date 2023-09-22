@@ -184,7 +184,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>01.01.{{ $value->year + 1 }} - йилга колдик</td>
+                <td>01.01.{{ $year + 1 }} - йилга колдик</td>
                 <?php
                 if (!isset($debt[$key]->dt_weight)) {
                     $dt_weight = 0;
